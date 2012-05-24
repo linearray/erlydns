@@ -1,0 +1,7 @@
+Make queries (approximately) equally fast, regardless of delegation, etc.
+
+When checking whether a domain already exists in erlydnsadmin.erl, don't look for a SOA entry in the record table, but an entry in the domain table.
+
+DNS Label Compression is implemented poorly and costs too much performance.
+
+Recursion.

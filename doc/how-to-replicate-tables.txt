@@ -1,0 +1,30 @@
+When you have one server erlydns@node1 running, then:
+
+Create a second run-script for the server on node2.
+
+When running both nodes on the same machine, make sure MNESIA_DIR and ERLANG_NODE are different from node1.
+
+Make sure -cookie is the same.
+
+
+for example:
+
+ERL=`which erl`
+MNESIA_DIR=zweitesmnesiadata
+ERLANG_NODE=zweitererlydns
+
+$ERL -setcookie franz -sname $ERLANG_NODE -mnesia dir $MNESIA_DIR extra_db_nodes "['erlydns@node1']" -s mnesia
+
+
+mnesia:info() will tell you if it worked.
+
+run:
+mnesia:change_table_copy_type(schema, node(), disc_copies).
+
+then run:
+mnesia:add_table_copy(Table, node(), disc_copies).
+
+for every Table (currently domain and record).
+
+quit erl, run the new runscript on node2, done.
+

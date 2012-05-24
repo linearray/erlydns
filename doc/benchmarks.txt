@@ -1,0 +1,33 @@
+Erlang R13B01
+Intel(R) Xeon(R) CPU           X3220  @ 2.40GHz
+All tests with HiPE, erlydns running with -smp enable, benchmark with -smp disable.
+
+Erlydns 0.1:
+> benchmark:main({127,0,0,1},1053,10000).
+waiting for replies....First test (unknown domain):
+10000 queries, 1710 milliseconds, 5848 queries/sec
+waiting for replies....Second test (A record):
+10000 queries, 1067 milliseconds, 9372 queries/sec
+waiting for replies....Third test (NXDOMAIN):
+10000 queries, 2879 milliseconds, 3473 queries/sec
+waiting for replies....Fourth test (redirected with glue):
+10000 queries, 4008 milliseconds, 2495 queries/sec
+
+
+Erlydns 0.0:
+> benchmark:main({127,0,0,1},1053,10000).
+waiting for replies....First test (unknown domain):
+10000 queries, 2786 milliseconds, 3589 queries/sec
+waiting for replies....Second test (A record):
+10000 queries, 1461 milliseconds, 6844 queries/sec
+waiting for replies....Third test (NXDOMAIN):
+10000 queries, 5354 milliseconds, 1867 queries/sec
+waiting for replies....Fourth test (redirected with glue):
+10000 queries, 6462 milliseconds, 1547 queries/sec
+
+Speedup:
+63%
+37%
+86%
+61%
+respectively.

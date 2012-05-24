@@ -1,0 +1,56 @@
+Ideally you create a dedicated user for erlydns.
+
+You need erlang installed (>= R12B to be sure, some more recent R11B
+versions will work too). Whether you use erlang-hipe (native code
+compiler) or not does not make much of a difference at this time.
+
+build.sh in src/ will compile all source files.
+
+runserver.sh is an example run-script. Change MNESIA_DIR and the port
+(default 1053) if you like. Priviledged ports will not work, use your
+OS for port redirection.
+
+The reason why you should have a dedicated user is because erlang
+uses a pre-shared key to authenticate nodes, which is stored in
+$HOME/.erlang.cookie
+
+Alternatively you could specify the cookie with -set_cookie on the
+command line (not recommended except for testing purposes, delete the
+respective flag from the runscript after you have set up the user).
+
+You can also set the ports used for erlang distribution by adding
+the flags
+
+-kernel inet_dist_listen_min 4000 inet_dist_listen_max 4000
+
+This would instruct erlang to only use port 4000. For additional
+security you should only allow access to the portrange for your erlang
+nodes, using your OS.
+
+You also need to allow access to port 4369 (epmd - erlang port mapper daemon).
+
+
+
+When you first run erlydns you need to create the database. This is
+done as follows:
+
+c(lib_mnesia).
+lib_mnesia:create().
+
+
+Afterwards you can start the erlydnsadmin interface and start entering
+domains/RRs:
+
+c(erlydnsadmin).
+erlydnsadmin:loop().
+
+
+quitting the erlang shell is done with:
+
+q().
+
+
+If you want to daemonize erlydns you need to add -noshell to the
+parameters in the runscript. Keep in mind that in order to make changes
+to the database you need to use an erl session with the correct -mnesia dir
+set.
